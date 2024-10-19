@@ -29,17 +29,21 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         // app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::postAccountHandler);
+        app.post("/login", this::postLoginHandler);
 
         return app;
     }
 
-    /**
-     * This is an example handler for an example endpoint.
-     * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
-    // private void exampleHandler(Context context) {
-    //     context.json("sample text");
-    // }
+    private void postLoginHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.loginAccount(account);
+        if(addedAccount!=null){
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }else{
+            ctx.status(401);
+        }
+    }
 
     private void postAccountHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

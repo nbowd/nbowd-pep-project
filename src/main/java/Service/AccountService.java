@@ -17,8 +17,21 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    public List<Account> getAllAccounts() {
-        return this.accountDAO.getAllAccounts();
+    // public List<Account> getAllAccounts() {
+    //     return this.accountDAO.getAllAccounts();
+    // }
+
+    public Account loginAccount(Account account) {
+        Account storedAccount = this.accountDAO.getAccountByUsername(account.getUsername());
+        if (storedAccount == null) {
+            return null;
+        }
+
+        if (!storedAccount.getPassword().equals(account.getPassword())) {
+            return null;
+        }
+
+        return storedAccount;
     }
 
     public Account addAccount(Account account) {
