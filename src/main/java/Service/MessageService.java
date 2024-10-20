@@ -28,6 +28,10 @@ public class MessageService {
         return this.messageDAO.getMessageByID(message_id);
     }
 
+    public List<Message> getMessagesByAccount(int account_id) {
+        return this.messageDAO.getMessagesByAccount(account_id);
+    }
+
     public Message addMessage(Message message) {
 
         if (accountDAO.getAccountByAccountID(message.getPosted_by()) == null) {

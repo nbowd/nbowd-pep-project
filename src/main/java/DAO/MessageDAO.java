@@ -19,7 +19,6 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
         try {
-            //Write SQL logic here
             String sql = "SELECT * FROM message";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
@@ -57,6 +56,34 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+    
+    public List<Message> getMessagesByAccount(int account_id){
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM message WHERE posted_by = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, account_id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (!rs.isBeforeFirst()) {
+                return messages;
+            }
+
+            while(rs.next()){
+                Message message = new Message(rs.getInt("message_id"),
+                        rs.getInt("posted_by"),
+                        rs.getString("message_text"),
+                        rs.getLong("time_posted_epoch"));
+                messages.add(message);
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return messages;
     }
 
     public Message insertMessage(Message message){
