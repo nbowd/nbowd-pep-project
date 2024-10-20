@@ -48,4 +48,8 @@ public class MessageService {
         
         return this.messageDAO.insertMessage(message);
     }
+
+    public Message deleteMessageByID(int message_id) {
+        return this.messageDAO.deleteMessageByID(message_id);
+    }
 }

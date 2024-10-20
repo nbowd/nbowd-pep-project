@@ -1,11 +1,15 @@
 package DAO;
 
-import Model.Message;
-import Util.ConnectionUtil;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.Message;
+import Util.ConnectionUtil;
 
 // message_id integer primary key auto_increment,
 // posted_by integer,
@@ -103,6 +107,38 @@ public class MessageDAO {
                 int generated_message_id = (int) pkeyResultSet.getLong(1);
                 return new Message(generated_message_id, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
             }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Message deleteMessageByID(int message_id){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+            String sql = "SELECT * FROM message WHERE message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, message_id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            Message message = null;
+
+            if (rs.next()){
+                message = new Message(
+                        rs.getInt("message_id"),
+                        rs.getInt("posted_by"),
+                        rs.getString("message_text"),
+                        rs.getLong("time_posted_epoch"));
+            }
+
+            String deleteSQL = "DELETE FROM message WHERE message_id = ?";
+            PreparedStatement preparedDeleteStatement = connection.prepareStatement(deleteSQL);
+            preparedDeleteStatement.setInt(1, message_id);
+            preparedDeleteStatement.executeUpdate();
+
+            return message;
+  
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
