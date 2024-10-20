@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,6 +37,7 @@ public class SocialMediaController {
         app.post("/register", this::postAccountHandler);
         app.post("/login", this::postLoginHandler);
 
+        app.get("/messages", this::getAllMessagesHandler);
         app.post("/messages", this::postMessageHandler);
 
         return app;
@@ -60,6 +63,11 @@ public class SocialMediaController {
         }else{
             ctx.status(400);
         }
+    }
+
+    public void getAllMessagesHandler(Context ctx){
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
     }
 
     public void postMessageHandler(Context ctx) throws JsonProcessingException {

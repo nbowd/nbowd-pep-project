@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.List;
+
 import DAO.AccountDAO;
 import DAO.MessageDAO;
 import Model.Message;
@@ -16,6 +18,10 @@ public class MessageService {
     // For testing/mocking
     public MessageService(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
+    }
+
+    public List<Message> getAllMessages() {
+        return this.messageDAO.getAllMessages();
     }
 
     public Message addMessage(Message message) {
