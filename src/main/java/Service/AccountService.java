@@ -1,7 +1,5 @@
 package Service;
 
-import java.util.List;
-
 import DAO.AccountDAO;
 import Model.Account;
 
@@ -16,10 +14,6 @@ public class AccountService {
     public AccountService(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
-
-    // public List<Account> getAllAccounts() {
-    //     return this.accountDAO.getAllAccounts();
-    // }
 
     public Account loginAccount(Account account) {
         Account storedAccount = this.accountDAO.getAccountByUsername(account.getUsername());
