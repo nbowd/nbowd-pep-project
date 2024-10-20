@@ -24,6 +24,10 @@ public class MessageService {
         return this.messageDAO.getAllMessages();
     }
 
+    public Message getMessageByID(int message_id) {
+        return this.messageDAO.getMessageByID(message_id);
+    }
+
     public Message addMessage(Message message) {
 
         if (accountDAO.getAccountByAccountID(message.getPosted_by()) == null) {
