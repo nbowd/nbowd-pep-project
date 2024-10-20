@@ -3,6 +3,7 @@ package Controller;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -39,6 +40,7 @@ public class SocialMediaController {
 
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::GetMessageByIDHandler);
+        app.patch("/messages/{message_id}", this::UpdateMessageByIDHandler);
         app.delete("/messages/{message_id}", this::DeleteMessageByIDHandler);
         app.get("/accounts/{account_id}/messages", this::GetMessagesByAccountHandler);
         app.post("/messages", this::postMessageHandler);
@@ -100,6 +102,27 @@ public class SocialMediaController {
             ctx.json(mapper.writeValueAsString(addedMessage));
         }else{
             ctx.status(400);
+        }
+    }
+
+    public void UpdateMessageByIDHandler(Context ctx){
+        String id = ctx.pathParam("message_id");
+        int message_id = Integer.valueOf(id);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(ctx.body());
+
+            String message_text = rootNode.get("message_text").asText();
+
+            Message message = messageService.updateMessageByID(message_id, message_text); 
+            if (message == null) {
+                ctx.status(400);
+                return;
+            }
+            ctx.json(message);
+        } catch (Exception e) {
+            ctx.status(400).json("Invalid JSON format: " + e.getMessage());
         }
     }
 

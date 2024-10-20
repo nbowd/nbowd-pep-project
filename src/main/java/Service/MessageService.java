@@ -52,4 +52,20 @@ public class MessageService {
     public Message deleteMessageByID(int message_id) {
         return this.messageDAO.deleteMessageByID(message_id);
     }
+
+    public Message updateMessageByID(int message_id, String message_text) {
+        if (messageDAO.getMessageByID(message_id) == null) {
+            return null;
+        }
+
+        if (message_text.equals("")) {
+            return null;
+        }
+
+        if (message_text.length() > 255) {
+            return null;
+        }
+        
+        return this.messageDAO.updateMessageByID(message_id, message_text);
+    }
 }
