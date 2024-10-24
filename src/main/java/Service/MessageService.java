@@ -33,15 +33,15 @@ public class MessageService {
     }
 
     public Message addMessage(Message message) {
-
+        // Checks that message is posted by valid account
         if (accountDAO.getAccountByAccountID(message.getPosted_by()) == null) {
             return null;
         }
-        
+        // Checks for empty message
         if (message.getMessage_text().equals("")) {
             return null;
         }
-
+        // Checks for valid String length
         if (message.getMessage_text().length() > 254) {
             return null;
         }
@@ -54,14 +54,16 @@ public class MessageService {
     }
 
     public Message updateMessageByID(int message_id, String message_text) {
+        // Check that message exists
         if (messageDAO.getMessageByID(message_id) == null) {
             return null;
         }
-
+        // Checks for empty String
         if (message_text.equals("")) {
             return null;
         }
 
+        // Checks for valid String length
         if (message_text.length() > 255) {
             return null;
         }

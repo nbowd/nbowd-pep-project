@@ -34,16 +34,16 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        // app.get("example-endpoint", this::exampleHandler);
+
         app.post("/register", this::postAccountHandler);
         app.post("/login", this::postLoginHandler);
 
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::GetMessageByIDHandler);
-        app.patch("/messages/{message_id}", this::UpdateMessageByIDHandler);
-        app.delete("/messages/{message_id}", this::DeleteMessageByIDHandler);
         app.get("/accounts/{account_id}/messages", this::GetMessagesByAccountHandler);
         app.post("/messages", this::postMessageHandler);
+        app.patch("/messages/{message_id}", this::UpdateMessageByIDHandler);
+        app.delete("/messages/{message_id}", this::DeleteMessageByIDHandler);
 
         return app;
     }
@@ -113,6 +113,7 @@ public class SocialMediaController {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(ctx.body());
 
+            // retrieves message_text field name from the request body
             String message_text = rootNode.get("message_text").asText();
 
             Message message = messageService.updateMessageByID(message_id, message_text); 

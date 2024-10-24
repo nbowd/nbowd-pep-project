@@ -5,6 +5,11 @@ import Util.ConnectionUtil;
 
 import java.sql.*;
 
+// Table structure - account
+// account_id integer primary key auto_increment,
+// username varchar(255) unique,
+// password varchar(255)
+
 public class AccountDAO {
 
     public Account getAccountByAccountID(int account_id){

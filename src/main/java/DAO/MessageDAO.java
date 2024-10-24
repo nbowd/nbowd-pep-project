@@ -11,6 +11,7 @@ import java.util.List;
 import Model.Message;
 import Util.ConnectionUtil;
 
+// Table structure - message
 // message_id integer primary key auto_increment,
 // posted_by integer,
 // message_text varchar(255),

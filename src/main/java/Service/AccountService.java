@@ -17,10 +17,11 @@ public class AccountService {
 
     public Account loginAccount(Account account) {
         Account storedAccount = this.accountDAO.getAccountByUsername(account.getUsername());
+        // Checks if account is valid
         if (storedAccount == null) {
             return null;
         }
-
+        // Checks for matching password
         if (!storedAccount.getPassword().equals(account.getPassword())) {
             return null;
         }
